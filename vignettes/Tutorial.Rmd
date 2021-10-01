@@ -1,0 +1,305 @@
+
+---
+title: "Decoding Intracellular Pathogen of H3N2 at the Single-Cell level 
+  using Yeskit"
+author: "Wei Zhang"
+date: "2021/09/10"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 4
+    toc_float: no
+    theme: cerulean
+    highlight: tango
+    number_sections: yes
+    df_print: tibble
+  pdf_document:
+    toc: yes
+    toc_depth: '4'
+    fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{Tutorial}
+  %\usepackage[UTF-8]{inputenc}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r, echo=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache = FALSE, eval = TRUE,
+                      warnings = FALSE, message = FALSE,
+                      fig.width = 6, fig.height = 5)
+```
+
+Taking the in-vitro experiment of H3N2 infection data (SRA Accession number: 
+  [SRP239555](https://www.ncbi.nlm.nih.gov/sra/?term=SRP239555)) as an 
+  example, we used [PathogenTrack](https://github.com/ncrna/PathogenTrack) to 
+  identify H3N2 infected cells at the single-cell level and used 
+  [Yeskit](https://github.com/ncrna/Yeskit) to analyze and explore the 
+  biological functions that may be related to H3N2 infection.
+
+# Install Yeskit from GitHub
+```{r installation, eval=FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+if (!requireNamespace("devtools", quietly = TRUE))
+    BiocManager::install("devtools")
+if (requireNamespace("Yeskit", quietly = TRUE))
+    devtools::install_github("ncrna/Yeskit")
+```
+
+# Import Yeskit
+First, we load the package:
+```{r setup, warning=FALSE, message=FALSE}
+library(Yeskit)
+library(topGO)
+```
+
+# Importation
+Now, let's load the single-cell count matrix:
+```{r import-bystander-data, fig.width=5, fig.height=5, fig.align="center"}
+#| fig.cap="Quality control for bystander"
+Bystander <- scRead(sample_name = "Bystander", 
+                    data_dir = system.file(
+                      "extdata/H3N2_10X_matrix/Bystander/", 
+                      package="Yeskit"), 
+                    gene_column = 2, project_name = "H3N2", 
+                    group_name = "Bystander", 
+                    meta_file = system.file(
+                      "extdata/H3N2_10X_matrix/Bystander/microbes.tsv", 
+                      package="Yeskit")
+                    )
+```
+
+```{r import-infected-data, fig.width=5, fig.height=5, fig.align="center"}
+#| fig.cap="Quality control for bystander"
+Infected <- scRead(sample_name = "Infected", 
+                   data_dir = system.file(
+                     "extdata/H3N2_10X_matrix/Infected/", package="Yeskit"), 
+                   gene_column = 2, project_name = "H3N2", 
+                   group_name = "Infected", 
+                   meta_file = system.file(
+                     "extdata/H3N2_10X_matrix/Infected/microbes.tsv", 
+                     package="Yeskit"))
+```
+
+# Integration
+Then, we integrate these two `Seurat` object
+```{r integration, message=FALSE, warning=FALSE, fig.align="center"}
+#| fig.cap="Harmony Interation"
+Integrated <- scIntegrate(object.list=list(Bystander, Infected), 
+                          object.names = c("Bystander", "Infected"), 
+                          batch.rm = "harmony", resolution = 0.7)
+```
+
+# Differential analysis
+## Differential analysis between Infected and Bystander
+```{r DGE-of-infected-vs-bystander, message=FALSE, warning=FALSE}
+slot(Integrated, "misc")$Infected_vs_Bystander <- scDGE(object = Integrated, 
+                         comparison = c("Infected", "Bystander"), 
+                         group.by = "group", min.cells = 10, 
+                         logFC = 0.25, clusters = NULL)
+```
+
+## Differential analysis between H3N2_positive and H3N2_negative 
+```{r DGE-of-H3N2pos-vs-H3N2neg, message=FALSE, warning=FALSE}
+slot(Integrated, "misc")$H3N2 <- scPathogenDGE(object = Integrated, 
+                         species.by = "H3N2", min.cells = 5)
+```
+
+# GO annotation
+## GO annotation of DGEs between Infected and Bystander
+```{r infected-vs-bystander-GO-Enrichment, message=FALSE, warning=FALSE}
+slot(Integrated, "misc")$Infected_vs_Bystander.GO <- scGO(object = Integrated, 
+                         key = "Infected_vs_Bystander", 
+                         logFC = 0.25, only.pos = FALSE,
+                         reference = "human")
+```
+
+## GO annotation of DGEs between H3N2_positive and H3N2_negative 
+```{r H3N2pos-vs-H3N2neg-GO-Enrichment, message=FALSE, warning=FALSE}
+slot(Integrated, "misc")$H3N2.GO <- scPathogenGO(object = Integrated, 
+                         key = "H3N2", clusters = NULL, species = "H3N2", 
+                         logFC = 0.25)
+```
+
+# MSigDB scoring
+```{r MSigDB-score, message=FALSE, warning=FALSE}
+Integrated <- scMsigdbScoring(object = Integrated, 
+                              category = "H", 
+                              genesets = "HALLMARK_INFLAMMATORY_RESPONSE"
+                              )
+```
+
+# Visualization
+## Visualization of cell clusters by scDimPlot
+```{r DimPlot, fig.height=3, fig.width=8, fig.align="center"}
+#| fig.cap="Cell DimPlot"
+scDimPlot(object = Integrated, 
+          reduction = "umap", 
+          cols = NULL, 
+          split.by = "sample", 
+          ncol = 2, 
+          pt.size = 2)
+```
+
+## Visualization of cell densities by scDensityPlot
+```{r DensityPlot, fig.height=3, fig.width=8, fig.align="center"}
+#| fig.cap="Cell Density Plot"
+scDensityPlot(object = Integrated, 
+              reduction = "umap", 
+              split.by = "sample", 
+              ncol = 2)
+```
+
+## Visualization of cell population fractions by scPopulationPlot, 
+  the x axis stands for clusters
+```{r PopulationPlot, fig.height=3, fig.width=3, fig.align="center"}
+#| fig.cap="Cell Population Plot by cluster"
+scPopulationPlot(object = Integrated, 
+                 by = "cluster", 
+                 cols = "sc", 
+                 order = c("Bystander", "Infected"))
+```
+
+## Visualization of meta data by scVizMeta
+```{r VizMetaPlot, fig.height=3.3, fig.width=10, fig.align="center"} 
+#| fig.cap="H3N2 DimPlot"
+scVizMeta(object = Integrated, 
+          reduction = "umap", 
+          signature="H3N2", 
+          title = "H3N2", 
+          raster = TRUE, 
+          split.by = "sample", 
+          pt.size = 2, 
+          interval = c(
+            Abundant = 1000, 
+            Large = 500, 
+            Medium = 100, 
+            Small = 10, 
+            Single = 1, 
+            None = 0)
+          )
+```
+
+## Visualization of H3N2-infected cell fractions by scPathogenRatioPlot
+```{r PathogenRatioPlot, fig.height=3, fig.width=4, fig.align="center"}
+#| fig.cap="H3N2 Ratio Plot"
+scPathogenRatioPlot(object = Integrated, 
+                    species = "H3N2", 
+                    split.by = "sample", 
+                    ncol = 2)
+```
+
+## Visualization of DGEs by scVolcanoPlot
+```{r VolcanoPlot, fig.height=4, fig.width=4, fig.align="center"}
+#| fig.cap="Volcano Plot of Infected_vs_Bystander"
+scVolcanoPlot(object = Integrated, 
+              key = "Infected_vs_Bystander", 
+              cluster = "0", 
+              top_n = 10)
+```
+
+## Visualization of enriched GO terms for up-regulated genes by scGOBarPlot
+```{r GOBarPlot-up, fig.height=3, fig.width=6, fig.align="center"}
+#| fig.cap="Infected_vs_Bystander.GO_up"
+scGOBarPlot(object = Integrated, 
+            key = "Infected_vs_Bystander.GO", 
+            ont = "BP", 
+            top_n = 6, 
+            direction = "up", 
+            cluster = "0")
+```
+
+## Visualization of enriched GO terms for down-regulated genes by scGOBarPlot
+```{r GOBarPlot-down, fig.height=3, fig.width=6, fig.align="center"}
+#| fig.cap="Infected_vs_Bystander.GO_down"
+scGOBarPlot(object = Integrated, 
+            key = "Infected_vs_Bystander.GO", 
+            ont = "BP", 
+            top_n = 6, 
+            direction = "down", 
+            cluster = "0")
+```
+
+## Visualization of enriched GO terms for up-regulated genes by scGODotPlot
+```{r GODotPlot-up, fig.height=4, fig.width=7, fig.align="center"}
+#| fig.cap="Infected_vs_Bystander.GO_up"
+scGODotPlot(object = Integrated, 
+            key = "Infected_vs_Bystander.GO", 
+            ont = "BP", 
+            direction = "up", 
+            top_n = 10, 
+            font.size = 8)
+```
+
+## Visualization of enriched GO terms for down-regulated genes by scGODotPlot
+```{r GODotPlot-down, fig.height=4, fig.width=7, fig.align="center"}
+#| fig.cap="Infected_vs_Bystander.GO_down"
+scGODotPlot(object = Integrated, 
+            key = "Infected_vs_Bystander.GO", 
+            ont = "BP", 
+            direction = "down", 
+            top_n = 10,
+            clusters = c("0"),
+            font.size = 8)
+```
+
+
+## BarPlot shows enriched GO terms for up-regulated genes of H3N2pos_vs_H3N2neg
+```{r GOBarPlot-H3N2-up, fig.height=4, fig.width=7, fig.align="center"}
+#| fig.cap="H3N2pos_vs_H3N2neg.GO_up"
+scGOBarPlot(object = Integrated, 
+            key = "H3N2.GO", 
+            cluster = "0", 
+            extra = "H3N2", 
+            top_n = 6)
+```
+
+## DotPlot shows enriched GO terms for up-regulated genes of H3N2pos_vs_H3N2neg
+```{r GODotPlot-H3N2-up, fig.height=4, fig.width=7, fig.align="center"}
+#| fig.cap="H3N2pos_vs_H3N2neg.GO_up"
+scGODotPlot(object = Integrated, 
+            key = "H3N2.GO", 
+            clusters = "0", 
+            extra = "H3N2", 
+            top_n = 6)
+```
+
+## Visualization of HALLMARK_INFLAMMATORY_RESPONSE pathway
+```{r INFLAMMATORY-RESPONSE, fig.height=3, fig.width=9, fig.align="center"}
+#| fig.cap = "HALLMARK_INFLAMMATORY_RESPONSE"
+scScoreDimPlot(object = Integrated, 
+               signature = "HALLMARK_INFLAMMATORY_RESPONSE", 
+               split.by="sample", 
+               ncol = 2, 
+               pt.size = 2)
+```
+
+# Session Information
+```{r, echo=FALSE}
+sessionInfo()
+```
+
+# References
+
+1. Zheng GXY, Terry JM, Belgrader P et al. Massively parallel digital 
+  transcriptional profiling of single cells, Nature Communications 2017;8:14049
+2. Stuart T, Butler A, Hoffman P et al. Comprehensive Integration of 
+  Single-Cell Data, Cell 2019;177:1888-1902.e1821
+3. Korsunsky I, Millard N, Fan J et al. Fast, sensitive and accurate int-
+  egration of single-cell data with Harmony, Nature Methods 2019;16:1289-1296
+4. Alexa A, Rahnenführer J. Gene set enrichment analysis with topGO, 
+  Bioconductor Improv 2009;27:1-26
+5. Liberzon A, Subramanian A, Pinchback R et al. Molecular signatures database 
+  (MSigDB) 3.0, Bioinformatics 2011;27:1739-1740
+6. Yuan et al. Computational Methods for Single-Cell Data Analysis. Methods in 
+  Molecular Biology. 2019;doi:10.1007/978-1-4939-9057-3
+7. Borcherding N, Bormann N L, Kraus G. scRepertoire: An R-based toolkit for 
+  single-cell immune receptor analysis. F1000Research, 2020, 9
+8. Petukhov V. ggrastr: Raster layers for ggplot2. 2018
+9. Wickham H. ggplot2. Wiley Interdisciplinary Reviews: Computational 
+  Statistics, 2011, 3(2): 180-185
+10. Finak G, McDavid A, Yajima M, et al. MAST: a flexible statistical 
+  framework for assessing transcriptional changes and characterizing 
+  heterogeneity in single-cell RNA sequencing data. 
+  Genome biology, 2015, 16(1): 1-13.
