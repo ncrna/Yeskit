@@ -24,7 +24,7 @@ Please check the following link to get a rapid understanding about `Yeskit`:
 
 In a particular case, the Cairo package can be loaded but crashes the R process when called. This is probably the case that the version of Cairo was built with an older version of R. Try the following instruction:
 ```
-Bioconductor::install("Cairo", force = TRUE)
+BioManager::install("Cairo", force = TRUE)
 ```
 
 For OS X users, you may happen to an error like this:
@@ -41,7 +41,7 @@ If you have any problems, comments or suggestions, please feel free to contact _
 
 ## How to cite
 
-**Decoding Intracellular Pathogens of scRNA-seq experiments with PathogenTrack and Yeskit.**
+**PathogenTrack and Yeskit: tools for identifying intracellular pathogens from single-cell RNA-sequencing datasets as illustrated by application to COVID-19**
 
 
 
