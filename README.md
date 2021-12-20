@@ -37,11 +37,11 @@ The reason is X11 doesn't ship with OS X any more, users can download and instal
 
 ## Help
 
-If you have any problems, comments or suggestions, please feel free to contact _**Wei Zhang**_, [admin@ncrna.net](mailto:admin@ncrna.net).
+If you have any questions/problems with `Yeskit`, feel free to leave an issue! We will try our best to provide support, address new issues, and keep improving this package.
 
 ## How to cite
 
-**PathogenTrack and Yeskit: tools for identifying intracellular pathogens from single-cell RNA-sequencing datasets as illustrated by application to COVID-19**
+`PathogenTrack` and `Yeskit`: tools for identifying intracellular pathogens from single-cell RNA-sequencing datasets as illustrated by application to COVID-19
 
 
 
