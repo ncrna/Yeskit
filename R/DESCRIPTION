@@ -1,0 +1,52 @@
+Package: Yeskit
+Type: Package
+Title: Yet Another Single-Cell Analysis Toolkit (Yeskit)
+Version: 0.99.0
+Date: 2021-09-25
+Authors@R: person(given = "Wei", family = "Zhang", role = c("cre", "aut"), email = "admin@ncrna.net")
+Description: This is a single-cell analysis tookit. It can be used for 
+    single-cell gene expression matrices importation, data integration, 
+    clustering, differential analysis, functional analysis, and 
+    visualization. It obeys the default data structure of Seurat, and 
+    stores pathogen expression data and pathway enrichment scores in 
+    the obj@meta.data slot and stores differential gene analysis results 
+    and GO enrichment results in the obj@misc slot. Besides, Yeskit has 
+    the option to rasterize the geom_point layer of ggplot2, while keep 
+    all axes, labels, and text in vector format.
+Depends:
+    R (>= 3.6.0)
+Imports:
+    utils,
+    stats,
+    grDevices,
+    Seurat (>= 3.0.0),
+    ggplot2 (>= 3.3.0),
+    cowplot (>= 1.0.0),
+    RColorBrewer (>= 1.1.2),
+    dplyr (>= 0.8.5),
+    harmony (>= 0.1.0),
+    topGO,
+    org.Hs.eg.db,
+    org.Mm.eg.db,
+    methods (>= 3.6.0),
+    patchwork (>= 1.0.0),
+    ggrepel (>= 0.8.2),
+    Matrix (>= 1.2.18),
+    MASS (>= 7.3.51.5),
+    scales (>= 1.1.0),
+    gtable (>= 0.3.0),
+    ggrastr (>= 0.2.3),
+    msigdbr (>= 7.0.1),
+    RANN (>= 2.6.1)
+Suggests: 
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown
+biocViews: SingleCell, Clustering, GeneExpression, DifferentialExpression, GO, Annotation, Visualization, Software
+VignetteBuilder: knitr
+LazyData: true
+License: MIT + file LICENSE
+Encoding: UTF-8
+RoxygenNote: 7.1.1
+BugReports: https://github.com/ncrna/Yeskit/issues
+git_url: https://github.com/ncrna/Yeskit

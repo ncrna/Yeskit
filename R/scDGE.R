@@ -36,7 +36,6 @@ scDGE <- function(object = object, comparison = c("condA", "condB"),
                   group.by = NULL, min.cells = 20, min.pct = 0.1,
                   logFC = 0.25, clusters = NULL) {
   results <- list()
-  seurat_clusters <- NULL
   if (is.null(clusters)) clusters = levels(object)
   if (length(comparison) != 2) stop("Comparison must have 2 elements!")
   condA <- comparison[1]
@@ -47,7 +46,7 @@ scDGE <- function(object = object, comparison = c("condA", "condB"),
   for (cluster in clusters) {
     message("### ", "Comparing cluster-", cluster, " between ", 
             condA, " and ", condB, " ...\n")
-    Object <- subset(object, seurat_clusters == cluster)
+    Object <- subset(object, clusters == cluster)
     if (all(comparison %in% names(table(Object[[group.by]])))) {
       Object <- Object[, Object@meta.data[[group.by]] %in% comparison]
     } else {

@@ -41,7 +41,7 @@ scPathogenDGE <- function(object = NULL, species.by = NULL,
   if (!species.by %in% names(object@meta.data)) {
     stop("The feature ", species.by, " does not exist in MetaData slot!\n")
   }
-  seurat_clusters <- p_val_adj <- NULL
+  p_val_adj <- NULL
   results <- list()
   for (feature in species.by) {
     message("### ", "Analysis feature ", feature, " ...\n")
@@ -55,7 +55,7 @@ scPathogenDGE <- function(object = NULL, species.by = NULL,
     DE <- data.frame()
     for (cluster in clusters) {
       message("====== ", "Analysis cluster-", cluster, " ... ")
-      Object <- subset(object, seurat_clusters == cluster)
+      Object <- subset(object, clusters == cluster)
       Object$group <- ifelse(Object@meta.data[, feature] > 0, "Pos", "Neg")
       Expr <- as.matrix(Seurat::GetAssayData(Object))
       if (length(Object$group[Object$group == "Pos"]) < min.cells) {

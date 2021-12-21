@@ -64,7 +64,7 @@ scPathogenRatioPlot <- function(object = NULL, species = NULL, cols = NULL,
     return(p)
   }
   if (is.null(x = split.by)) {
-    Data <- object@meta.data[, c(species, "seurat_clusters")]
+    Data <- object@meta.data[, c(species, "clusters")]
     return(pp(Data, title = NULL, Legend = TRUE))
   }
   plots <- list()
@@ -73,11 +73,11 @@ scPathogenRatioPlot <- function(object = NULL, species = NULL, cols = NULL,
       stop("The parameter 'split.by' ", split.by, 
            " does not exist in MetaData slot!\n")
     }
-    Data <- object@meta.data[, c(species, "seurat_clusters", split.by)]
+    Data <- object@meta.data[, c(species, "clusters", split.by)]
     if (is.null(ncol)) {
       ncol = ceiling(sqrt(length(unique(Data[, split.by]))))
     }
-    legend <- pp(object@meta.data[, c(species, "seurat_clusters")], 
+    legend <- pp(object@meta.data[, c(species, "clusters")], 
       title = NULL, Legend = TRUE)
     legend <- ggplot2::ggplotGrob(legend)
     legend <- gtable::gtable_filter(legend, "box", trim = FALSE)

@@ -103,7 +103,7 @@ scIntegrate <- function(object.list = NULL, object.names = NULL,
   } else {
     stop("batch.rm must be 'harmony' or 'seurat'!")
   }
-
+  
   cols <- NA
   if (length(levels(Seurat::Idents(object))) <= 36) {
     cols = c("#1660A7", "#FF6A00", "#219418", "#CD0C18", "#814BB2", "#794339",
@@ -123,6 +123,8 @@ scIntegrate <- function(object.list = NULL, object.names = NULL,
     object <- Seurat::AddMetaData(object = object, metadata = coord, 
       col.name = meta_ids)
   }
+  # Add cluster information into Meta.data slot
+  object[["clusters"]] <- Seurat::Idents(object)
   return(object)
 }
 
