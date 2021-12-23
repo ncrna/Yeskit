@@ -1,7 +1,7 @@
 Package: Yeskit
 Type: Package
 Title: Yet Another Single-Cell Analysis Toolkit (Yeskit)
-Version: 0.99.0
+Version: 0.1.1
 Date: 2021-09-25
 Authors@R: person(given = "Wei", family = "Zhang", role = c("cre", "aut"), email = "admin@ncrna.net")
 Description: This is a single-cell analysis tookit. It can be used for 
@@ -25,9 +25,9 @@ Imports:
     RColorBrewer (>= 1.1.2),
     dplyr (>= 0.8.5),
     harmony (>= 0.1.0),
-    topGO (>= 2.38.1),
-    org.Hs.eg.db (>= 3.10.0),
-    org.Mm.eg.db (>= 3.10.0),
+    topGO (>= 2.18),
+    org.Hs.eg.db,
+    org.Mm.eg.db,
     methods (>= 3.6.0),
     patchwork (>= 1.0.0),
     ggrepel (>= 0.8.2),
