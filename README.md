@@ -40,9 +40,7 @@ The reason is X11 doesn't ship with OS X any more, users can download and instal
 If you have any questions/problems with `Yeskit`, feel free to leave an issue! We will try our best to provide support, address new issues, and keep improving this package.
 
 ## Citation
-Wei Zhang, Xiaoguang Xu, Ziyu Fu, Jian Chen, Saijuan Chen, Yun Tan. PathogenTrack and Yeskit: tools for identifying intracellular pathogens from single-cell RNA-sequencing datasets as illustrated by application to COVID-19. Front. Med., doi: 10.1007/s11684-021-0915-9
-
-https://journal.hep.com.cn/fmd/EN/10.1007/s11684-021-0915-9
+Wei Zhang, Xiaoguang Xu, Ziyu Fu, Jian Chen, Saijuan Chen, Yun Tan. PathogenTrack and Yeskit: tools for identifying intracellular pathogens from single-cell RNA-sequencing datasets as illustrated by application to COVID-19. Front. Med., https://doi.org/10.1007/s11684-021-0915-9
 
 
 
