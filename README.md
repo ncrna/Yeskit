@@ -42,10 +42,4 @@ If you have any questions/problems with `Yeskit`, feel free to leave an issue! W
 ## Citation
 Wei Zhang, Xiaoguang Xu, Ziyu Fu, Jian Chen, Saijuan Chen, Yun Tan. PathogenTrack and Yeskit: tools for identifying intracellular pathogens from single-cell RNA-sequencing datasets as illustrated by application to COVID-19. Front. Med., https://journal.hep.com.cn/fmd/EN/10.1007/s11684-021-0915-9
 
-
-
-
-
-
-
-
+The preprint version can be found [here](https://journal.hep.com.cn/fmd/EN/10.1007/s11684-021-0915-9).
