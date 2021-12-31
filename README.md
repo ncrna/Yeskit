@@ -4,7 +4,7 @@
 
 `Yeskit` can be used to read other information (such as gene mutation-by-cell matrix, pathogen count-by-cell matrix) and store them as additional data in the Seurat obj@metadata slot. In addition, `Yeskit` also has the function of reading and distinguishing the source of cells from the scRNA-seq data of xenografts samples (PDX model).
 
-When there are many points in the vector diagram, editing becomes difficult. To this end, most visualization functions in `Yeskit` have the option to rasterize the _geom_point_ layer of ggplot2 and keep all axes, labels, and text in vector format.
+When there are many points in the vector diagram, editing becomes difficult. To this end, most visualization functions in `Yeskit` have the option to rasterize the _geom_point_ layer of ggplot2 and keep all axes, labels, and text in vector format. The detailes are described in our paper [*`PathogenTrack and Yeskit: tools for identifying intracellular pathogens from single-cell RNA-sequencing datasets as illustrated by application to COVID-19`*](https://journal.hep.com.cn/fmd/EN/10.1007/s11684-021-0915-9).
 
 ## Installation
 
