@@ -1,4 +1,6 @@
+[![Platform](https://img.shields.io/badge/platform-any-ec2eb4.svg)](https://github.com/ncrna/Yeskit)
 [![check in Biotreasury](https://img.shields.io/badge/Biotreasury-collected-brightgreen)](https://biotreasury.rjmart.cn/#/tool?id=20726)
+
 # Yeskit (*Yet another single-cell analysis toolkit*) <img src="https://github.com/ncrna/Yeskit/blob/master/inst/figures/Yeskit_logo.png" align="right" height=142 width=164/>
 
 `Yeskit` is an R package designed for single-cell gene expression data _importation_, _integration_, _clustering_, _differential analysis_, _functional analysis_, and _visualization_. Since `Yeskit` does not change the default data structure of `Seurat`, it can be easily integrated into most existing scRNA-seq analysis workflows. 
