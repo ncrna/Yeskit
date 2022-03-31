@@ -21,7 +21,7 @@ devtools::install_github("ncrna/Yeskit")
 
 Please check the following link to get a rapid understanding about `Yeskit`:
 
-[Walkthrough - Decoding Intracellular Pathogens of H3N2 at the Single-Cell level using Yeskit](https://htmlpreview.github.io/?https://github.com/ncrna/Yeskit/blob/main/vignettes/Decoding_Intracellular_Pathogens_of_H3N2_at_the_Single-Cell_level_using_Yeskit.html)
+[Walkthrough - Decoding Intracellular Pathogens of H3N2 at the Single-Cell level using Yeskit](https://htmlpreview.github.io/?https://github.com/ncrna/Yeskit/blob/master/vignettes/Decoding_Intracellular_Pathogens_of_H3N2_at_the_Single-Cell_level_using_Yeskit.html)
 
 ## Troubleshooting
 
