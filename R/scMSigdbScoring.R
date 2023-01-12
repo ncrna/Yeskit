@@ -41,7 +41,7 @@ scMsigdbScoring <- function(object = NULL, species = "human",
     all_gene_sets <- as.data.frame(all_gene_sets[, 
                                    c("gs_cat", "gs_name", "gene_symbol")])
     all_gene_sets <- aggregate(. ~ gs_cat + gs_name, 
-                               data = all_gene_sets, FUN = "c")
+                               data = all_gene_sets, FUN = "paste")
     MSIGDB <- list()
     for (i in seq_len(nrow(all_gene_sets))){
       MSIGDB[[all_gene_sets$gs_name[i]]] <- 
