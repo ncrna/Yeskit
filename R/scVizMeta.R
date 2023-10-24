@@ -145,7 +145,7 @@ scVizMeta <- function(object = NULL, signature = NULL, pt.size = NULL,
     ymax <- max(Data[, 2])
     #cols <- c(rev(RColorBrewer::brewer.pal(length(levels(Data$class)) - 1, 
     #  palette))[1:length(levels(Data$class)) -1], "gray")
-    cols <- c(rev(RColorBrewer::brewer.pal(length(levels(Data$class)) - 1, 
+    cols <- c(rev(RColorBrewer::brewer.pal(length(levels(Data$class)), 
       palette))[seq_len(length(levels(Data$class)) -1)], "gray")
     # names(cols) <- names(interval)
     names(cols) <- names(interval)[(length(interval) - 
@@ -176,7 +176,7 @@ scVizMeta <- function(object = NULL, signature = NULL, pt.size = NULL,
     ymax <- max(Data[, 2])
     #cols <- c(rev(RColorBrewer::brewer.pal(length(levels(Data$class)) - 1, 
     #  palette))[1:length(levels(Data$class)) -1], "gray")
-    cols <- c(rev(RColorBrewer::brewer.pal(length(levels(Data$class)) - 1, 
+    cols <- c(rev(RColorBrewer::brewer.pal(length(levels(Data$class)), 
       palette))[seq_len(length(levels(Data$class)) -1)], "gray")
     names(cols) <- names(interval)
     legend <- ps(data = Data, cols = cols, title = NULL, 
