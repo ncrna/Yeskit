@@ -125,6 +125,7 @@ scIntegrate <- function(object.list = NULL, object.names = NULL,
   }
   # Add cluster information into Meta.data slot
   object[["clusters"]] <- Seurat::Idents(object)
+  object <- JoinLayers(object)
   return(object)
 }
 
