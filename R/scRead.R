@@ -62,6 +62,7 @@ scRead <- function(sample_name = NULL, data_dir = NULL, gene_column = 2,
                    meta_features = NULL) {
   object <- Seurat::Read10X(data.dir = data_dir, gene.column = gene_column, 
     strip.suffix = strip_suffix)
+  object <- object$`Gene Expression`
   hsaFeatures <- grep(pattern = human.prefix, x = rownames(x = object), 
     value = TRUE)
   mmuFeatures <- grep(pattern = mouse.prefix, x = rownames(x = object), 
