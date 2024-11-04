@@ -92,14 +92,14 @@ scIntegrate <- function(object.list = NULL, object.names = NULL,
     object <- Seurat::FindClusters(object, resolution = resolution)
     object <- Seurat::RunUMAP(object, reduction = "harmony", 
       dims = seq_len(nPC))
-    object <- Seurat::RunTSNE(object, reduction = "harmony", 
-      dims = seq_len(nPC), do.fast = TRUE)
+    #object <- Seurat::RunTSNE(object, reduction = "harmony", 
+    #  dims = seq_len(nPC), do.fast = TRUE)
   } else if (batch.rm == "seurat") {
     object <- Seurat::FindNeighbors(object, reduction = "pca", 
       dims = seq_len(nPC))
     object <- Seurat::FindClusters(object, resolution = resolution)
     object <- Seurat::RunUMAP(object, reduction = "pca", dims = seq_len(nPC))
-    object <- Seurat::RunTSNE(object, reduction = "pca", dims = seq_len(nPC))
+    #object <- Seurat::RunTSNE(object, reduction = "pca", dims = seq_len(nPC))
   } else {
     stop("batch.rm must be 'harmony' or 'seurat'!")
   }
